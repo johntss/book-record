@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Book Record</title>
+    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+  </head>
+  <body>
+    <h1>Book Record</h1>
+    <form onsubmit="return addBook()">
+      <label>Title:</label>
+      <input type="text" id="titleInput" required /><br />
+
+      <label>Author:</label>
+      <input type="text" id="authorInput" required /><br />
+
+      <label>Publisher:</label>
+      <input type="text" id="publisherInput" required /><br />
+
+      <label>Total number of pages:</label>
+      <input type="number" id="pagesInput" required /><br />
+
+      <label>Year of Publication:</label>
+      <input type="number" id="yearInput" required /><br />
+
+      <label>Summary:</label>
+      <textarea id="summaryInput" required></textarea><br />
+
+      <button type="submit">Add Book</button>
+    </form>
+
+    <br />
+
+    <input type="text" id="searchInput" onkeyup="searchBook()" placeholder="Search by title..." />
+
+    <br />
+
+    <table id="bookTable">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Author</th>
+          <th>Publisher</th>
+          <th>Total number of pages</th>
+          <th>Year of Publication</th>
+          <th>Summary</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <br />
+
+    <div>
+      <label>Total Books: </label>
+      <span id="totalBooks">0</span>
+    </div>
+    <div>
+      <label>Average Pages: </label>
+      <span id="avgPages">0</span>
+    </div>
+
+    <script>
+      var books = JSON.parse(localStorage.getItem("books") || "[]");
+
+      displayBooks();
+
+      function addBook() {
+        var title = document.getElementById("titleInput").value;
+        var author = document.getElementById("authorInput").value;
+        var publisher = document.getElementById("publisherInput").value;
+        var pages = document.getElementById("pagesInput").value;
+        var year = document.getElementById("yearInput").value;
+        var summary = document.getElementById("summaryInput").value;
+
+        var book = {
+          title: title,
+          author: author,
+          publisher: publisher,
+          pages: pages,
+          year: year,
+          summary: summary,
+        };
+
+        books.push(book);
+        localStorage.setItem("books", JSON.stringify(books));
+
+        displayBooks();
+        clearForm();
+        return false;
+      }
+
+      function clearForm() {
+        document.getElementById("titleInput").value = "";
+        document.getElementById("authorInput").value = "";
+        document.getElementById("publisherInput").value = "";
+        document.getElementById("pagesInput").value = "";
+        document.getElementById("yearInput").value = "";
+        document.getElementById("summaryInput").value = "";
+      }
+
+      function displayBooks() {
+        var tableBody = document.getElementById("bookTable").getElementsByTagName("tbody")[0];
+        tableBody.innerHTML = "";
+
+        for (var i = 0; i < books.length; i++) {
+          var row = tableBody.insertRow(i);
+
+          var titleCell = row.insertCell(0);
+          titleCell.innerHTML = books[i].title;
+
+          var authorCell = row.insertCell(1);
+          authorCell.innerHTML = books[i].author;
+
+          var publisherCell = row.insertCell(2);
+          publisherCell.innerHTML = books[i].publisher;
+
+          var pagesCell = row.insertCell(3);
+          pagesCell.innerHTML = books[i].pages;
+
+          var yearCell = row.insertCell(4);
+          yearCell.innerHTML = books[i].year;
+
+          var summaryCell = row.insertCell(5);
+          summaryCell.innerHTML = books[i].summary;
+
+          var actionCell = row.insertCell(6);
+          var deleteButton = document.createElement("button");
+          deleteButton.innerHTML = "Delete";
+          deleteButton.onclick = (function (index) {
+            return function () {
+              deleteBook(index);
+            };
+          })(i);
+          actionCell.appendChild(deleteButton);
+        }
+
+        updateStats();
+      }
+
+      function deleteBook(index) {
+        books.splice(index, 1);
+        localStorage.setItem("books", JSON.stringify(books));
+        displayBooks();
+      }
+
+      function searchBook() {
+        var searchInput = document.getElementById("searchInput");
+        var filter = searchInput.value.toUpperCase();
+        var tableBody = document.getElementById("bookTable").getElementsByTagName("tbody")[0];
+        var rows = tableBody.getElementsByTagName("tr");
+
+        for (var i = 0; i < rows.length; i++) {
+          var title = rows[i].getElementsByTagName("td")[0];
+          if (title.innerHTML.toUpperCase().indexOf(filter) > -1) {
+            rows[i].style.display = "";
+          } else {
+            rows[i].style.display = "none";
+          }
+        }
+      }
+
+      function updateStats() {
+        var totalBooks = document.getElementById("totalBooks");
+        var avgPages = document.getElementById("avgPages");
+
+        totalBooks.innerHTML = books.length;
+
+        var sum = 0;
+        for (var i = 0; i < books.length; i++) {
+          sum += parseInt(books[i].pages);
+        }
+        avgPages.innerHTML = Math.round(sum / books.length);
+      }
+
+      function importDataFromExcel(file) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+          var data = new Uint8Array(e.target.result);
+          var workbook = XLSX.read(data, { type: "array" });
+          var sheetName = workbook.SheetNames[0];
+          var worksheet = workbook.Sheets[sheetName];
+          var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+          // Assuming the data is organized in columns: Title, Author, Publisher, Pages, Year, Summary
+          for (var i = 1; i < jsonData.length; i++) {
+            var book = {
+              title: jsonData[i][0],
+              author: jsonData[i][1],
+              publisher: jsonData[i][2],
+              pages: jsonData[i][3],
+              year: jsonData[i][4],
+              summary: jsonData[i][5],
+            };
+
+            books.push(book);
+          }
+
+          localStorage.setItem("books", JSON.stringify(books));
+          displayBooks();
+        };
+        reader.readAsArrayBuffer(file);
+      }
+
+      // Event listener for file input
+      document.getElementById("fileInput").addEventListener("change", function (e) {
+        var file = e.target.files[0];
+        importDataFromExcel(file);
+      });
+    </script>
+  </body>
+</html>

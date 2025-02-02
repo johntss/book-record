@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Book Record System</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+  </style>
+</head>
+<body>
+  <h1>Book Record System</h1>
+
+  <h2>Add Book</h2>
+  <form id="bookForm">
+    <label for="yearPublication">Year Publication:</label>
+    <input type="number" id="yearPublication" name="yearPublication" required><br>
+
+    <label for="title">Title:</label>
+    <input type="text" id="title" name="title" required><br>
+
+    <label for="author">Author:</label>
+    <input type="text" id="author" name="author" required><br>
+
+    <label for="publisher">Publisher:</label>
+    <input type="text" id="publisher" name="publisher" required><br>
+
+    <label for="totalPages">Total Number of Pages:</label>
+    <input type="number" id="totalPages" name="totalPages" required><br>
+
+    <label for="summary">Summary:</label><br>
+    <textarea id="summary" name="summary" rows="4" required></textarea><br>
+
+    <input type="submit" value="Submit">
+  </form>
+
+  <h2>Book Records</h2>
+  <table id="bookRecords">
+    <tr>
+      <th>Year Publication</th>
+      <th>Title</th>
+      <th>Author</th>
+      <th>Publisher</th>
+      <th>Total Number of Pages</th>
+      <th>Summary</th>
+    </tr>
+    <!-- Existing book records will be dynamically added here -->
+  </table>
+
+  <script>
+    document.getElementById("bookForm").addEventListener("submit", function(event) {
+      event.preventDefault(); // Prevent the default form submission
+
+      // Retrieve form values
+      var yearPublication = document.getElementById("yearPublication").value;
+      var title = document.getElementById("title").value;
+      var author = document.getElementById("author").value;
+      var publisher = document.getElementById("publisher").value;
+      var totalPages = document.getElementById("totalPages").value;
+      var summary = document.getElementById("summary").value;
+
+      // Create a new row in the book records table
+      var table = document.getElementById("bookRecords");
+      var newRow = table.insertRow(table.rows.length);
+      var cells = [
+        newRow.insertCell(0),
+        newRow.insertCell(1),
+        newRow.insertCell(2),
+        newRow.insertCell(3),
+        newRow.insertCell(4),
+        newRow.insertCell(5)
+      ];
+
+      // Set the cell values
+      cells[0].innerHTML = yearPublication;
+      cells[1].innerHTML = title;
+      cells[2].innerHTML = author;
+      cells[3].innerHTML = publisher;
+      cells[4].innerHTML = totalPages;
+      cells[5].innerHTML = summary;
+
+      // Clear the form values for the next entry
+      document.getElementById("bookForm").reset();
+    });
+  </script>
+</body>
+</html>

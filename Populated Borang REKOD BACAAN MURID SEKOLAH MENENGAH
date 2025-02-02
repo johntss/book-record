@@ -1,0 +1,22 @@
+from docx import Document
+
+# Load the Word document template
+template_path = "Borang REKOD BACAAN MURID SEKOLAH MENENGAH.docx"
+doc = Document(template_path)
+
+# Get the table in the document (assuming it's the first table)
+table = doc.tables[0]
+
+# Iterate through the books and populate the table rows
+for book in books:
+    row = table.add_row().cells
+    row[0].text = book['title']
+    row[1].text = book['author']
+    row[2].text = book['publisher']
+    row[3].text = book['pages']
+    row[4].text = book['year']
+    row[5].text = book['summary']
+
+# Save the populated Word document
+output_path = "Populated Borang REKOD BACAAN MURID SEKOLAH MENENGAH.docx"
+doc.save(output_path)

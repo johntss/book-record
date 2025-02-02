@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Library System</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+  </style>
+</head>
+<body>
+  <?php
+    // Check if form is submitted
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+      // Retrieve form values
+      $yearPublication = $_POST['yearPublication'];
+      $title = $_POST['title'];
+      $author = $_POST['author'];
+      $publisher = $_POST['publisher'];
+      $totalPages = $_POST['totalPages'];
+      $summary = $_POST['summary'];
+
+      // Validate and sanitize the input data (you can add your own validation logic here)
+
+      // Save the book record to a file or database (here, we'll store in a text file)
+      $data = "$yearPublication|$title|$author|$publisher|$totalPages|$summary\n";
+      file_put_contents('book_records.txt', $data, FILE_APPEND);
+    }
+
+    // Retrieve book records from the file (assuming it exists and readable)
+    $bookRecords = [];
+    if (file_exists('book_records.txt')) {
+      $fileContents = file_get_contents('book_records.txt');
+      $bookRecords = explode("\n", $fileContents);
+    }
+  ?>
+
+  <h1>Library System</h1>
+
+  <h2>Add Book</h2>
+  <form id="bookForm" method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+    <label for="yearPublication">Year Publication:</label>
+    <input type="number" id="yearPublication" name="yearPublication" required><br>
+
+    <label for="title">Title:</label>
+    <input type="text" id="title" name="title" required><br>
+
+    <label for="author">Author:</label>
+    <input type="text" id="author" name="author" required><br>
+
+    <label for="publisher">Publisher:</label>
+    <input type="text" id="publisher" name="publisher" required><br>
+
+    <label for="totalPages">Total Number of Pages:</label>
+    <input type="number" id="totalPages" name="totalPages" required><br>
+
+    <label for="summary">Summary:</label><br>
+    <textarea id="summary" name="summary" rows="4" required></textarea><br>
+
+    <input type="submit" value="Submit">
+  </form>
+
+  <h2>Book Records</h2>
+  <table id="bookRecords">
+    <tr>
+      <th>Year Publication</th>
+      <th>Title</th>
+      <th>Author</th>
+      <th>Publisher</th>
+      <th>Total Number of Pages</th>
+      <th>Summary</th>
+    </tr>
+    <?php foreach ($bookRecords as $record) {
+      $fields = explode("|", $record); ?>
+      <tr>
+        <td><?php echo $fields[0]; ?></td>
+        <td><?php echo $fields[1]; ?></td>
+        <td><?php echo $fields[2]; ?></td>
+        <td><?php echo $fields[3]; ?></td>
+        <td><?php echo $fields[4]; ?></td>
+        <td><?php echo $fields[5]; ?></td>
+      </tr>
+    <?php } ?>
+  </table>
+</body>
+</html>

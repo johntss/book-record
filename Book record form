@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Record Form</title>
+</head>
+<body>
+  <h1>Book Record Form</h1>
+  <form action="/book/add" method="post">
+    <input type="text" name="title" placeholder="Title">
+    <input type="text" name="author" placeholder="Author">
+    <input type="text" name="publisher" placeholder="Publisher">
+    <input type="text" name="summary" placeholder="Summary">
+    <input type="number" name="pages" placeholder="Pages">
+    <input type="submit" value="Add Book">
+  </form>
+</body>
+</html>

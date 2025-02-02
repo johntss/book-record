@@ -1,0 +1,88 @@
+{
+  "reading_record": {
+    "basic_info": {
+      "date": "DD/MM/YYYY",
+      "publication_year": "",
+      "title": "",
+      "author": "",
+      "publisher": "",
+      "url": ""
+    },
+    "classification": {
+      "book": {
+        "pages": "",
+        "selected_code": ["M1.10", "M1.20", "M1.30", "M1.40", "M1.50"]
+      },
+      "non_book": {
+        "type": "",
+        "selected_code": ["G1", "G2", "G3", "G4", "G5"]
+      }
+    },
+    "activities": [
+      {
+        "name": "Rumusan",
+        "completed": true,
+        "mandatory": true,
+        "confirmed_by": ""
+      },
+      {
+        "name": "Mengeja",
+        "completed": false,
+        "confirmed_by": ""
+      },
+      {
+        "name": "Mendeklamasi sajak",
+        "completed": false,
+        "confirmed_by": ""
+      },
+      {
+        "name": "Amali",
+        "completed": false,
+        "confirmed_by": ""
+      },
+      {
+        "name": "Lakonan",
+        "completed": false,
+        "confirmed_by": ""
+      },
+      {
+        "name": "Lain-lain",
+        "completed": false,
+        "confirmed_by": ""
+      },
+      {
+        "name": "Melukis",
+        "completed": false,
+        "confirmed_by": ""
+      },
+      {
+        "name": "Bercerita",
+        "completed": false,
+        "confirmed_by": ""
+      }
+    ],
+    "statistics": {
+      "total_activities": 0,
+      "book_counts": {
+        "M1.10": 0,
+        "M1.20": 0,
+        "M1.30": 0,
+        "M1.40": 0,
+        "M1.50": 0
+      },
+      "non_book_counts": {
+        "G1": 0,
+        "G2": 0,
+        "G3": 0,
+        "G4": 0,
+        "G5": 0
+      }
+    }
+  },
+  "metadata": {
+    "note": {
+      "mandatory": "Ruangan Rumusan WAJIB Dilengkapkan",
+      "reference": "Sila rujuk jadual di hadapan berkaitan bahan dan mata ganjaran"
+    }
+  }
+}

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Book Record</title>
+  </head>
+  <body>
+    <h1>Book Record</h1>
+
+    <table id="bookTable">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Author</th>
+          <th>Publisher</th>
+          <th>Total number of pages</th>
+          <th>Year of Publication</th>
+          <th>Summary</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <button onclick="downloadBookRecord()">Download Book Record</button>
+
+    <script>
+      var books = JSON.parse(localStorage.getItem("books") || "[]");
+
+      displayBooks();
+
+      function displayBooks() {
+        var tableBody = document.getElementById("bookTable").getElementsByTagName("tbody")[0];
+        tableBody.innerHTML = "";
+
+        for (var i = 0; i < books.length; i++) {
+          var row = tableBody.insertRow(i);
+
+          var titleCell = row.insertCell(0);
+          titleCell.innerHTML = books[i].title;
+
+          var authorCell = row.insertCell(1);
+          authorCell.innerHTML = books[i].author;
+
+          var publisherCell = row.insertCell(2);
+          publisherCell.innerHTML = books[i].publisher;
+
+          var pagesCell = row.insertCell(3);
+          pagesCell.innerHTML = books[i].pages;
+
+          var yearCell = row.insertCell(4);
+          yearCell.innerHTML = books[i].year;
+
+          var summaryCell = row.insertCell(5);
+          summaryCell.innerHTML = books[i].summary;
+        }
+      }
+
+      function downloadBookRecord() {
+        // Create an HTML table with the book records
+        var htmlTable = document.getElementById("bookTable").outerHTML;
+
+        // Create a Blob with the HTML content
+        var blob = new Blob([htmlTable], { type: "text/html" });
+
+        // Create a temporary URL for the Blob
+        var url = URL.createObjectURL(blob);
+
+        // Create a link element
+        var link = document.createElement("a");
+        link.href = url;
+        link.download = "Book_Record.doc";
+        link.click();
+
+        // Clean up the temporary URL
+        URL.revokeObjectURL(url);
+      }
+    </script>
+  </body>
+</html>
