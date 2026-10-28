@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign in | Book Record</title>
+  <link rel="stylesheet" href="/assets/auth.css">
+  <script src="/assets/auth.js" defer></script>
+</head>
+<body>
+  <main class="auth-card">
+    <p class="eyebrow">BOOK RECORD</p>
+    <h1>Welcome back</h1>
+    <p class="muted">Sign in to view the book collection.</p>
+    <form data-auth-form="login">
+      <label for="email">Email address</label>
+      <input id="email" name="email" type="email" autocomplete="email" maxlength="254" required>
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" autocomplete="current-password" minlength="12" maxlength="72" required>
+      <button type="submit">Sign in</button>
+      <p class="message" role="status" aria-live="polite"></p>
+    </form>
+    <p class="footer">New here? <a href="/register">Create an account</a></p>
+  </main>
+</body>
+</html>
