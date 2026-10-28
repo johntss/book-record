@@ -159,9 +159,9 @@ app.post("/api/login", loginLimiter, requireCsrf, asyncRoute(async (req, res) =>
   const email = typeof req.body.email === "string" ? req.body.email.trim().toLowerCase() : "";
   const password = typeof req.body.password === "string" ? req.body.password : "";
   const user = db.prepare("SELECT id, email, password_hash FROM users WHERE email = ?").get(email);
-  const passwordOk = user
-    ? await bcrypt.compare(password, user.password_hash)
-    : await bcrypt.compare(password || "not-a-real-password", "$2a$12$C6UzMDM.H6dfI/f/IKcEe.1z6fXw8bXbqL8zRzW7vZ9KqJ8HfM6Z6");
+  // Compare even for unknown emails to reduce obvious account-enumeration timing differences.
+  const dummyHash = "$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy";
+  const passwordOk = await bcrypt.compare(password, user ? user.password_hash : dummyHash);
   if (!user || !passwordOk) return res.status(401).json({ error: "Email or password is incorrect." });
 
   req.session.regenerate((error) => {
