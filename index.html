@@ -1,9 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="/assets/auth.js" defer></script>
 	<title>Book Information</title>
+  <style>body{font-family:system-ui,sans-serif;max-width:1100px;margin:2rem auto;padding:0 1rem}table{border-collapse:collapse;width:100%;margin-top:1rem}th,td{border:1px solid #d0d7de;padding:.65rem;text-align:left}th{background:#f3f6fb}button{padding:.55rem .9rem;cursor:pointer}</style>
 </head>
 <body>
+	<header style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;">
+		<p>Signed in as <strong data-current-user>loading…</strong></p>
+		<button type="button" data-logout>Sign out</button>
+	</header>
 	<h1>Book Information</h1>
 	<table>
 		<thead>
